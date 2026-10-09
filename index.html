@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Emergency Button</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;700&display=swap"
+    />
+
+    <style>
+      /* ---------- Colors and fonts ---------- */
+      :root {
+        --night: #1c1928;
+        --paper: #f4ebdf;
+        --muted: #a69dba;
+        --red: #d64545;
+        --display: "Instrument Serif", Georgia, serif;
+        --body: "DM Sans", system-ui, sans-serif;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background:
+          radial-gradient(
+            90% 60% at 50% 30%,
+            rgba(214, 69, 69, 0.18),
+            transparent 70%
+          ),
+          var(--night);
+        color: var(--paper);
+        font-family: var(--body);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* ---------- Warning label ---------- */
+      .warn {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        color: var(--red);
+        border: 2px solid var(--red);
+        padding: 6px 12px;
+        border-radius: 4px;
+      }
+
+      /* ---------- The big red button ---------- */
+      #btn {
+        width: 210px;
+        height: 210px;
+        border-radius: 50%;
+        border: 0;
+        margin: 28px 0 24px;
+        cursor: pointer;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #ff7a7a,
+          var(--red) 55%,
+          #8f2424
+        );
+        box-shadow:
+          0 10px 0 #6e1c1c,
+          0 18px 30px rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font: 700 18px var(--body);
+        letter-spacing: 0.08em;
+        padding: 30px;
+        transition:
+          transform 0.08s,
+          box-shadow 0.08s;
+      }
+      #btn:active {
+        transform: translateY(8px);
+        box-shadow:
+          0 2px 0 #6e1c1c,
+          0 6px 14px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ---------- Pep talk text ---------- */
+      #pep {
+        font-family: var(--display);
+        font-size: clamp(26px, 7vw, 36px);
+        line-height: 1.2;
+        max-width: 16em;
+        min-height: 2.6em;
+        margin: 0;
+      }
+
+      /* ---------- Counter ---------- */
+      #count {
+        font-size: 13px;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        margin: 10px 0 0;
+      }
+
+      /* ---------- Giraffe pops up when shown ---------- */
+      #giraffe {
+        margin-top: 12px;
+        animation: peek 0.6s cubic-bezier(0.3, 1.5, 0.5, 1);
+      }
+      @keyframes peek {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="warn">FOR EMERGENCY USE ONLY</div>
+    <button id="btn">PRESS IF STRESSED</button>
+    <p id="pep">Go ahead. Press it</p>
+    <p id="count"></p>
+    <div id="giraffe" hidden>
+      <svg width="90" viewBox="0 0 120 120">
+        <path d="M30 120 L70 120 L88 40 L70 34 Z" fill="#e9b04f" />
+        <ellipse cx="55" cy="95" rx="7" ry="5" fill="#b8742a" />
+        <ellipse cx="70" cy="62" rx="6" ry="5" fill="#b8742a" />
+        <line
+          x1="74"
+          y1="20"
+          x2="71"
+          y2="6"
+          stroke="#b8742a"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+        <line
+          x1="83"
+          y1="20"
+          x2="84"
+          y2="6"
+          stroke="#b8742a"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+        <ellipse cx="82" cy="30" rx="20" ry="12" fill="#e9b04f" />
+        <ellipse cx="98" cy="34" rx="10" ry="8" fill="#f3cf8a" />
+        <circle cx="83" cy="26" r="2.6" fill="#2a1f1a" />
+      </svg>
+    </div>
+
+    <script>
+      const peps = [
+        "That assignment is scared of you.",
+        "Close the tab. Drink water. Come Back",
+        "Omar says hi.",
+        "Fuel on Iced vanilla latte with cream.",
+        "Your future students are waiting for the best teacher.",
+        "Master's program 27% done...",
+        "Como sava (in my accent)",
+        "Shakoooo Makoooo",
+        "Think about it, The professor has also not read the whole reading.",
+      ];
+
+      let count = 0;
+
+      document.getElementById("btn").addEventListener("click", () => {
+        const randomNum = Math.floor(Math.random() * peps.length);
+        document.getElementById("pep").textContent = peps[randomNum];
+        count++;
+        document.getElementById("count").textContent =
+          "Emergencies Handled: " + count;
+        if (Math.random() < 0.3) {
+          document.getElementById("giraffe").hidden = false;
+        } else {
+          document.getElementById("giraffe").hidden = true;
+        }
+      });
+    </script>
+  </body>
+</html>
